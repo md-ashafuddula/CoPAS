@@ -62,6 +62,25 @@ python run.py --test --weight_path /path/to/trained_model.pth
 
 We have prepared 50 sample data for test, click [here](https://drive.google.com/drive/folders/1ZG1Cnr6o5u35jumdbWrdw5LC2Je2MD0z?usp=sharing) to download.
 
+#### Data Organization
+
+```
+/path/to/data/
+    ├── train/
+    │   ├── MR60236/
+    │   │   ├── axi PDW/
+    │   │   ├── cor PDW/
+    │   │   ├── cor T1WI/
+    │   │   ├── sag PDW/
+    │   │   ├── sag T2WI/
+    │   ├── MR87334/
+    │   └── ...
+    ├── val/
+    ├── test/
+    ├── samplelabels.csv
+
+```
+
 If you have any special requests, please send a email to Zelin Qiu (zqiuak@connect.ust.hk).
 
 ## License & Citation
