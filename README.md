@@ -30,7 +30,7 @@ Typically, it will take few minutes to complete the installation.
 
 
 ## Run
-1. Fill the data path in ```DataDict.json```, the sample is given in the file.
+1. Fill the data path in ```PathDict.py```, the sample is given in the file.
 2. Change parameters in ```Args.py``` to fit your data.
 #### Run the following command for training:
 ```bash
