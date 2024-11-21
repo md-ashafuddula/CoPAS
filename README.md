@@ -37,9 +37,19 @@ Typically, it will take few minutes to complete the installation.
 python run.py
 ```
 
+#### Optional:
+```
+python run.py --epochs 200 --batch_size 4 --lr 1e-3 --gpu 1 --augment True
+```
+
 #### Run the following command for testing:
 ```bash
 python run.py --test --weight_path PATH_TO_WEIGHT
+```
+
+#### Sample
+```
+python run.py --test --weight_path /path/to/trained_model.pth
 ```
 
 #### Other useful command line arguments:
