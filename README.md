@@ -74,9 +74,15 @@ We have prepared 50 sample data for test, click [here](https://drive.google.com/
     │   │   ├── sag PDW/
     │   │   ├── sag T2WI/
     │   ├── MR87334/
-    │   └── ...
-    ├── val/
-    ├── test/
+    │   └── ... (35 samples)
+    |   ├── validation/
+    │   ├── MR53188/
+    │   ├── MR65653/
+    │   └── ... (8 samples)
+    |   ├── test/
+    │   ├── MR87764/
+    │   ├── MR65651/
+    │   └── ... (7 samples)
     ├── samplelabels.csv
 
 ```
