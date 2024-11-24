@@ -83,8 +83,45 @@ We have prepared 50 sample data for test, click [here](https://drive.google.com/
     │   ├── MR87764/
     │   ├── MR65651/
     │   └── ... (7 samples)
-    ├── samplelabels.csv
+    ├── train_labels.csv
+    ├── test_labels.csv
+    ├── validation_labels.csv
+```
 
+#### General Structure
+
+```
+data_root/
+├── train/
+│   ├── patient1/
+│   │   ├── sag PDW/         # Sagittal PD-weighted sequence
+│   │   │   └── [DICOM files]
+│   │   ├── cor PDW/         # Coronal PD-weighted sequence
+│   │   │   └── [DICOM files]
+│   │   ├── axi PDW/         # Axial PD-weighted sequence
+│   │   │   └── [DICOM files]
+│   │   ├── sag T2WI/        # Sagittal T2-weighted sequence
+│   │   │   └── [DICOM files]
+│   │   └── cor T1WI/        # Coronal T1-weighted sequence
+│   │       └── [DICOM files]
+│   └── patient2/
+│       └── ...
+├── val/
+│   └── [same structure as train]
+├── test/
+│   └── [same structure as train]
+├── train_labels.csv
+├── val_labels.csv
+└── test_labels.csv
+```
+
+#### The labels in CSV files
+
+```
+patient_id,MENI,ACL,CART,PCL,MCL,LCL,EFFU,CONT,PLICA,CYST,IFP,PR
+patient1,1,0,1,0,0,0,1,0,0,1,0,0
+patient2,0,1,0,0,1,0,0,1,0,0,0,1
+...
 ```
 
 If you have any special requests, please send a email to Zelin Qiu (zqiuak@connect.ust.hk).
