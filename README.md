@@ -13,56 +13,12 @@ This is the official repository of
 by
 *Zelin Qiu, Zhuoyao Xie, Yanwen Li, Huangjing Lin, Qiang Ye, Menghong Wang, Shisi Li, Yinghua Zhao, and Hao Chen*
 
-## Installation Guide:
-The code is based on Python 3.8.0
-
-1. Download the repository
-```bash
-git clone https://github.com/zqiuak/CoPAS
-```
-
-2. Go to the `main` folder and install requested libarary.
-```bash
-cd main
-pip install -r requirements.txt
-```
-Typically, it will take few minutes to complete the installation.
-
-
-## Run
-1. Fill the data path in ```PathDict.py```, the sample is given in the file.
-2. Change parameters in ```Args.py``` to fit your data.
-#### Run the following command for training:
-```bash
-python run.py
-```
-
-#### Optional:
-```
-python run.py --epochs 200 --batch_size 4 --lr 1e-3 --gpu 1 --augment True
-```
-
-#### Run the following command for testing:
-```bash
-python run.py --test --weight_path PATH_TO_WEIGHT
-```
-
-#### Sample
-```
-python run.py --test --weight_path /path/to/trained_model.pth
-```
-
-#### Other useful command line arguments:
-```--epochs```: Maximum number of epoches in training.<br>
-```--batch_size```: Batch size.<br>
-```--lr```: Initial learning rate.<br>
-```--gpu```: GPU card number.<br>
-```--augment```: ```bool```, use augmentation or not.<br>
-
-
+### Dataset
 We have prepared 50 sample data for test, click [here](https://drive.google.com/drive/folders/1ZG1Cnr6o5u35jumdbWrdw5LC2Je2MD0z?usp=sharing) to download.
 
 #### Data Organization
+
+N. B. Set ``train`` folder name as ``Internal``
 
 ```
 /path/to/data/
@@ -123,6 +79,74 @@ patient1,1,0,1,0,0,0,1,0,0,1,0,0
 patient2,0,1,0,0,1,0,0,1,0,0,0,1
 ...
 ```
+
+## Installation Guide:
+The code is based on Python 3.8.0
+
+1. Download the repository
+```bash
+git clone https://github.com/zqiuak/CoPAS
+```
+
+2. Go to the `main` folder and install requested libarary.
+```bash
+cd main
+pip install -r requirements.txt
+```
+Typically, it will take few minutes to complete the installation.
+
+
+## Run
+1. Fill the data path in ```PathDict.py```, the sample is given in the file.
+2. Change parameters in ```Args.py``` to fit your data.
+#### Run the following command for training:
+```bash
+python run.py
+```
+
+#### Optional:
+```
+python run.py --epochs 200 --batch_size 4 --lr 1e-3 --gpu 1 --augment True
+```
+
+#### Run the following command for testing:
+```bash
+python run.py --test --weight_path PATH_TO_WEIGHT
+```
+
+#### Sample
+```
+python run.py --test --weight_path /path/to/trained_model.pth
+```
+
+#### Other useful command line arguments:
+```--epochs```: Maximum number of epoches in training.<br>
+```--batch_size```: Batch size.<br>
+```--lr```: Initial learning rate.<br>
+```--gpu```: GPU card number.<br>
+```--augment```: ```bool```, use augmentation or not.<br>
+
+## To Run the project
+
+Make Executable files,
+
+``chmod +x gpu_manager.py run_with_mem_management.py``
+
+then run,
+
+``python run_with_mem_management.py`` to run with memory management features
+or 
+If you get GPU memory errors, try:
+
+1. Reduce INPUT_DIM to 160 or 128
+2. Reduce SliceNum to 12 or 8
+3. Use even smaller batch sizes
+4. Disable some augmentations
+5. Try using a different GPU (change gpu='1' or '2' in Args.py)
+
+
+
+## Request to Authors
 
 If you have any special requests, please send a email to Zelin Qiu (zqiuak@connect.ust.hk).
 
