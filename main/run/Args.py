@@ -18,19 +18,20 @@ class Arguments():
         
         # task_args
         self.DatasetNameList = [k for k in dataset_dict.keys()]
+        # print('Args-DatasetNameList: ', self.DatasetNameList)
         self.DiseaseList = ['MENI', 'ACL', 'CART', 'PCL', 'MCL', 'LCL', 'EFFU', 'CONT', 'PLICA', 'CYST', 'IFP', 'PR']
         self.ViewList = ['Sag', 'Cor', 'Axi']
         self.SequenceList = ["sag PDW","cor PDW","axi PDW","sag T2WI","cor T1WI"]
         self.ClassNum = len(self.DiseaseList)
 
         # data_args        
-        self.INPUT_DIM = 224 # resolution of model input
+        self.INPUT_DIM = 224 # resolution of model input # Can reduce to 192
         self.MAX_PIXEL_VAL = 255
         self.MEAN = 58.09
         self.STDDEV = 49.73
         self.IMG_R = 576 # origin image resolution
         self.Spacing = (0.3, 0.3, 3.8)
-        self.SliceNum = 24
+        self.SliceNum = 24 # Can Reduce this to 16
         self.Patch_R = 448# patch resolution
         self.Center_Crop = True
         self.ClassDistr = [771, 563, 278, 319, 114, 148, 114, 703, 287, 488, 146, 305, 80] # [total, cls1, cls2...]
@@ -55,13 +56,13 @@ class Arguments():
         # self.active_class = [1]*12
 
         # train args
-        self.gpu = '0'
+        self.gpu = '2'
         self.lr = 5e-5
         self.Augmentor = True
-        self.augrate = 4
+        self.augrate = 4 #Reduce augment rate to 2
         self.use_cache = False
         self.num_workers = 7
-        self.iters_to_accumulate = 1 # accumulate gradient for how many batches
+        self.iters_to_accumulate = 1 # accumulate gradient for how many batches # Accumulate gradients over more steps, can set 4
         self.data_balance = False
         self.debug = False
 
@@ -98,7 +99,7 @@ class Arguments():
         parser.add_argument('--augment', type=int, choices=[0, 1], default=1)
         parser.add_argument('--gamma', type=float, default=0.1)
         parser.add_argument('--epochs', type=int, default=50)
-        parser.add_argument('--batch_size', type=int, default=1)
+        parser.add_argument('--batch_size', type=int, default=1) # Can reduce
         parser.add_argument('--lr', type=float, default=self.lr)
         parser.add_argument('--flush_history', type=int, choices=[0, 1], default=0)
         parser.add_argument('--save_model', type=int, choices=[0, 1], default=1)
