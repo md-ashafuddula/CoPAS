@@ -117,7 +117,13 @@ python run.py --epochs 200 --batch_size 4 --lr 1e-3 --gpu 1 --augment True
 #### Run the following command for testing:
 
 ```bash
-python run.py --test --weight_path PATH_TO_WEIGHT
+# python run.py --test --weight_path PATH_TO_WEIGHT
+python run.py --test --weight_path /home/C00579118/CoPAS-0812/experiment_folder/Exp-ResNet3D-0305-152920-/model_0.5146_train_auc_0.4874_test_auc_0.4675_epoch_1_bestval.pth
+```
+##### Output
+
+```
+03/05 03:41:48 PM loss 40.0547 | auc 0.4675 | acc 0.5312elapsed time 15.42179560661316 s
 ```
 
 #### Sample
