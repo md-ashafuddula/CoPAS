@@ -180,61 +180,46 @@ If you find this work useful, please cite our paper:
 
 ## To run on different dataset
 
-``/CoPAS-0812/main$ python run.py --epochs 2 --batch_size 4 --lr 1e-3 --gpu 1 ``
+``    /CoPAS-0812/main$ python run.py --epochs 2 --batch_size 4 --lr 1e-3 --gpu 1 ``
 
 Bring update in following files and code
 1. PathDict.py
 
-```(path and dataset directory, structure)```
+```    (path and dataset directory, structure)```
 
-4. dataloader.py or use new dataloader ``kneeDataSetMRNet(data.Dataset)``
+2. dataloader.py or use new dataloader ``kneeDataSetMRNet(data.Dataset)``
 
 ```
 train_ds = kneeDataSetSITK('train', dataset_name='Internal', transform=Kargs.Augmentor, aug_rate=Kargs.augrate, use_cache=Kargs.use_cache, args=Kargs)
 val_ds = kneeDataSetSITK('val', dataset_name='Internal', transform=False, use_cache=Kargs.use_cache, args=Kargs)
 test_ds_dict = {dsname:kneeDataSetSITK('test', dataset_name=dsname, transform=False, use_cache=Kargs.use_cache, args=Kargs) for dsname in Kargs.DatasetNameList}
-```
 
-```import os
-import torch
-from run.Args import args
-from run.train import run
-from model.model import Multi_view_Knee
-from data.dataloader import kneeDataSetMRNet
-
-# Override default dataset
-args.DatasetNameList = ['MRNet']
-args.DiseaseList = ['MENI', 'ACL', 'Abnormal']
-args.ClassNum = len(args.DiseaseList)
-args.SliceNum = 24  # Set target slices
-
-# Create dataset instances
-train_ds = kneeDataSetMRNet('train', dataset_name='MRNet', transform=args.Augmentor, aug_rate=args.augrate, use_cache=args.use_cache, args=args)
-val_ds = kneeDataSetMRNet('val', dataset_name='MRNet', transform=False, use_cache=args.use_cache, args=args)
-test_ds_dict = {'MRNet': kneeDataSetMRNet('test', dataset_name='MRNet', transform=False, use_cache=args.use_cache, args=args)}
-
-# Run model
-run()
+# train_ds = kneeDataSetSITK('train', dataset_name='MRNet', transform=Kargs.Augmentor, aug_rate=Kargs.augrate, use_cache=Kargs.use_cache, args=Kargs)
+# val_ds = kneeDataSetSITK('val', dataset_name='MRNet', transform=False, use_cache=Kargs.use_cache, args=Kargs)
+# test_ds_dict = {dsname:kneeDataSetSITK('test', dataset_name=dsname, transform=False, use_cache=Kargs.use_cache, args=Kargs) for dsname in Kargs.DatasetNameList}
 ```
 
 4. model.py
 
 ```
-elf.mining_conv = nn.Conv3d(1, 12, (12,12,12)) #(1, 3, (3,3,3))  # For 3 classes instead of 12 (1, 12, (12,12,12)) #line-201
+        elf.mining_conv = nn.Conv3d(1, 12, (12,12,12)) #(1, 3, (3,3,3))  # For 3 classes instead of 12 (1, 12, (12,12,12)) #line-201
 ```
 
 6. train_mrnet.py
 7. Args.py
 
 ```
-# ['MENI', 'ACL', 'Abnormal'] #
+        # ['MENI', 'ACL', 'Abnormal'] 
         # ['MENI', 'ACL', 'CART', 'PCL', 'MCL', 'LCL', 'EFFU', 'CONT', 'PLICA', 'CYST', 'IFP', 'PR']
         self.DiseaseList = ['MENI', 'ACL', 'CART', 'PCL', 'MCL', 'LCL', 'EFFU', 'CONT', 'PLICA', 'CYST', 'IFP', 'PR']
         self.ViewList = ['Sag', 'Cor', 'Axi']
+        self.SequenceList = ["sag PDW","cor PDW","axi PDW","sag T2WI","cor T1WI"]
+        self.ClassNum = len(self.DiseaseList)
+        args.SliceNum = 12 #24  # Set target slices
 ```
 
 ```
-# data_args        
+        # data_args        
         self.INPUT_DIM = 192 #224 # resolution of model input # Can reduce to 192
         self.MAX_PIXEL_VAL = 255
         # self.MEAN = 58.09
@@ -248,30 +233,58 @@ elf.mining_conv = nn.Conv3d(1, 12, (12,12,12)) #(1, 3, (3,3,3))  # For 3 classes
         self.SliceNum = 12 #24 # Can Reduce this to 16
         self.Patch_R = 448# patch resolution
         self.Center_Crop = True
-        # self.ClassDistr = [771, 563, 278, 319, 114, 148, 114, 703, 287, 488, 146, 305, 80] # [total, cls1, cls2...]
+        self.ClassDistr = [771, 563, 278, 319, 114, 148, 114, 703, 287, 488, 146, 305, 80] # for Co-PAS, manually set [total, cls1, cls2...]
         # Update distribution for new classes
-        self.ClassDistr = self.calculate_class_distribution()
+        # self.ClassDistr = self.calculate_class_distribution()  # For MRNet
         self.cal_class_weight()
-        # self.Keep_slice = False
-        self.Keep_slice = True  # Important for handling variable slices
+        self.Keep_slice = False # for Co-PAS
+        # self.Keep_slice = True  # For MRNet # Important for handling variable slices
 ```
 
 ```
-def calculate_class_distribution(csv_path):
-    """Calculate class distribution from a CSV file"""
-    df = pd.read_csv(csv_path)
-    
-    total_samples = len(df)
-    meni_positive = df['MENI'].sum()
-    acl_positive = df['ACL'].sum()
-    abnormal_positive = df['Abnormal'].sum()
-    
-    return [total_samples, meni_positive, acl_positive, abnormal_positive]
+# self.active_class = self.active_class = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1] # For 12 class Co-PAS
+self.active_class = [1, 1, 1]  # Updated for 3 classes for MRNet
+self.active_branch = [1, 1, 1]
+```
 
-# Calculate for training set
-train_csv = '/home/C00579118/Dataset-List/MRNet-trans-2-CoPAS-data/train.csv'
-class_distr = calculate_class_distribution(train_csv)
-print(f"Class distribution: {class_distr}")
+```
+def calculate_class_distribution(self):
+        """Calculate class distribution from the training CSV file"""
+        import pandas as pd
+        
+        try:
+            # Get the path to the training labels file
+            train_csv = None
+            if 'MRNet' in self.DatasetNameList:
+                train_csv = dataset_dict['MRNet']['train_label']
+            else:
+                # Try to find a valid training label file
+                for dataset in self.DatasetNameList:
+                    if dataset in dataset_dict and 'train_label' in dataset_dict[dataset]:
+                        train_csv = dataset_dict[dataset]['train_label']
+                        break
+            
+            # Check if file exists
+            if not train_csv or not os.path.exists(train_csv):
+                print(f"Warning: Training labels file not found. Using default distribution.")
+                # Return a default distribution for 3 classes
+                return [100, 42, 11, 81] #[100, 30, 25, 45]  # Default: [total, MENI, ACL, Abnormal]
+            
+            print(f"Reading training labels from: {train_csv}")
+            # Read the CSV file
+            df = pd.read_csv(train_csv)
+            
+            # Calculate distribution
+            total_samples = len(df)
+            
+            # Check column names and adjust accordingly
+            meni_positive = df['MENI'].sum() if 'MENI' in df.columns else 0
+            acl_positive = df['ACL'].sum() if 'ACL' in df.columns else 0
+            abnormal_positive = df['Abnormal'].sum() if 'Abnormal' in df.columns else 0
+            
+            class_distr = [total_samples, meni_positive, acl_positive, abnormal_positive]
+            print(f"Calculated class distribution: {class_distr}")
+            return class_distr
 ```
 
 ```
