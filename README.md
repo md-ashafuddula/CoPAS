@@ -126,6 +126,15 @@ python run.py --test --weight_path PATH_TO_WEIGHT
 python run.py --test --weight_path /path/to/trained_model.pth
 ```
 
+#### Results on Sample data
+
+```
+03/05 03:31:31 PM Epoch 1
+ train loss 4.7876 | train auc 0.4937 | train acc 0.5238 |
+ val loss 33.7739 | val auc 0.45 | val acc 0.4286 |
+ test loss 37.8361 | test auc 0.3108 | test acc 0.5521 elapsed time 64.27903723716736 s
+```
+
 #### Other useful command line arguments:
 ```--epochs```: Maximum number of epoches in training.<br>
 ```--batch_size```: Batch size.<br>
