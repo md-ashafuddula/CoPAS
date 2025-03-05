@@ -179,6 +179,9 @@ If you find this work useful, please cite our paper:
 ```
 
 ## To run on different dataset
+
+``/CoPAS-0812/main$ python run.py --epochs 2 --batch_size 4 --lr 1e-3 --gpu 1 ``
+
 Bring update in following files and code
 1. PathDict.py
 
