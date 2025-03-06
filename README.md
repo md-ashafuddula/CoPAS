@@ -214,14 +214,20 @@ test_ds_dict = {dsname:kneeDataSetSITK('test', dataset_name=dsname, transform=Fa
 # test_ds_dict = {dsname:kneeDataSetSITK('test', dataset_name=dsname, transform=False, use_cache=Kargs.use_cache, args=Kargs) for dsname in Kargs.DatasetNameList}
 ```
 
-4. model.py
+3. model.py
 
 ```
         elf.mining_conv = nn.Conv3d(1, 12, (12,12,12)) #(1, 3, (3,3,3))  # For 3 classes instead of 12 (1, 12, (12,12,12)) #line-201
 ```
 
-6. train_mrnet.py
-7. Args.py
+4. train.py
+   
+   ```
+        # test_loader = DataLoader(test_ds_dict['Internal'], batch_size=args.batch_size, num_workers=args.num_workers, shuffle=False)
+        test_loader = DataLoader(test_ds_dict['MRNet'], batch_size=args.batch_size, num_workers=args.num_workers, shuffle=False)
+   ```
+   
+5. Args.py
 
 ```
         # ['MENI', 'ACL', 'Abnormal'] 
