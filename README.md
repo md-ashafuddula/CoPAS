@@ -220,6 +220,14 @@ test_ds_dict = {dsname:kneeDataSetSITK('test', dataset_name=dsname, transform=Fa
         elf.mining_conv = nn.Conv3d(1, 12, (12,12,12)) #(1, 3, (3,3,3))  # For 3 classes instead of 12 (1, 12, (12,12,12)) #line-201
 ```
 
+In ``Multi_view_Knee class``
+
+```
+    def criterion(self, pred, label, act_task = -1, final = False):
+        copas_class = 12
+        mrnet_class = 3
+```
+
 4. train.py
    
    ```
