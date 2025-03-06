@@ -212,6 +212,7 @@ test_ds_dict = {dsname:kneeDataSetSITK('test', dataset_name=dsname, transform=Fa
 # train_ds = kneeDataSetSITK('train', dataset_name='MRNet', transform=Kargs.Augmentor, aug_rate=Kargs.augrate, use_cache=Kargs.use_cache, args=Kargs)
 # val_ds = kneeDataSetSITK('val', dataset_name='MRNet', transform=False, use_cache=Kargs.use_cache, args=Kargs)
 # test_ds_dict = {dsname:kneeDataSetSITK('test', dataset_name=dsname, transform=False, use_cache=Kargs.use_cache, args=Kargs) for dsname in Kargs.DatasetNameList}
+# test_ds_dict = {'MRNet': kneeDataSetSITK('test', dataset_name='MRNet', transform=False, use_cache=Kargs.use_cache, args=Kargs)}
 ```
 
 3. model.py
