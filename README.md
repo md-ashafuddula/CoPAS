@@ -317,6 +317,57 @@ def calculate_class_distribution(self):
             return class_distr
 ```
 
+6. Utils.py
+
+```
+# The doctor_eval function is used to evaluate doctor (radiologist) predictions compared to ground truth labels.
+# hardcoded for 12 classes
+def doctor_eval(file_path, write_output=False, save_path = None):
+    co_pass_cls = 12+1
+    mrnet_cls = 3+1 #(1 ID + 3 class predictions = 4 columns per doctor)
+    
+    import pandas as pd
+    if write_output:
+        assert save_path != None
+    f = pd.read_csv(file_path, header=None)
+    # For MRNet with 3 classes (abnormal, acl, meniscus)
+    doc_num = f.shape[1]//mrnet_cls-1
+    doc_pred = []
+    doc_metrix = []
+    id = f.iloc[:, 0].values
+    
+    Label = f.iloc[:, 1:mrnet_cls].values ## Extract only 3 columns for labels
+    
+    for i in range(doc_num):
+        # Update indices for 3 classes
+        doc_pred.append(f.iloc[:, (i+1)*mrnet_cls+1:(i+2)*mrnet_cls].values)
+        _, _, metric = evaluate_prediction(doc_pred[i], Label, metrix_output=True)
+        
+        # write metric:
+        if write_output:
+            write_metrix(metric, save_path, "doctor_%d"%i, overwrite=(i==0), savename="doc_metrix")
+        doc_metrix.append(metric)
+    return id, Label, doc_pred, doc_metrix
+```
+
+in ``def evaluate_prediction``
+
+```
+# Use MRNet tasks instead of the original 12 classes
+    for i, task in enumerate(['abnormal', 'acl', 'meniscus']):
+```
+
+in ``write_metrix``
+
+```
+def write_metrix(metrix_dict, save_path, view, args=None, overwrite=False, savename="metrix"):
+    # Create default args object if needed
+    if args is None:
+        args = Arguments()
+        args.DiseaseList = ['abnormal', 'acl', 'meniscus']  # Set MRNet tasks
+
+```
+   
 ```
 For example, if you have:
 
